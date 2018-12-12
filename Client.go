@@ -57,8 +57,7 @@ func (c *Client) Connect() error {
 
 	//fmt.Println("flushing that bitch")
 	c.writer.Flush()
-	fmt.Println(n)
-
+	fmt.Printf("\n%d", n)
 	resp, err := c.reader.ReadString(etx)
 	//err = parseSessionResp(resp)
 
@@ -70,11 +69,3 @@ func (c *Client) Connect() error {
 // func parseSessionResp(response string) error {
 // 	/*  */
 // }
-
-func createLoginReq(refNum []byte, user string, password string) []byte {
-	bytes := make([]byte, 100)
-	bytes[0] = 2
-	bytes[1] = 3
-
-	return bytes
-}
