@@ -13,4 +13,6 @@ const (
 	OPID                      = "35"
 	SMS_SPECIFIC              = "5"
 	PDU_LEN_MINUS_DATA        = 17
+	ACK                       = "A"
+	NEG_RESULT                = "N"
 )

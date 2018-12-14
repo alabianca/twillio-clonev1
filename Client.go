@@ -53,13 +53,13 @@ func (c *Client) Connect() error {
 	c.reader = bufio.NewReader(conn)
 	c.writer = bufio.NewWriter(conn)
 
-	n, _ := c.writer.Write(createLoginReq(c.nextRefNum(), c.user, c.password))
+	c.writer.Write(createLoginReq(c.nextRefNum(), c.user, c.password))
 
 	//fmt.Println("flushing that bitch")
 	c.writer.Flush()
-	fmt.Printf("\n%d", n)
-	resp, err := c.reader.ReadString(etx)
-	//err = parseSessionResp(resp)
+	resp, _ := c.reader.ReadString(etx)
+
+	err := parseSessionResp(resp)
 
 	fmt.Println(resp)
 

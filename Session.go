@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"reflect"
+	"strings"
 )
 
 type Header struct {
@@ -26,6 +27,13 @@ type Session struct {
 	LNPI []byte
 	OPID []byte
 	RES1 []byte
+}
+
+type AuthError struct {
+}
+
+func (a AuthError) Error() string {
+	return "could not authenticate"
 }
 
 // stx <header> / <data> / <checksum> etx
@@ -72,10 +80,6 @@ func createLoginReq(refNum []byte, username string, pw string) []byte {
 	packet = append(packet, withChecksum...)
 	packet = append(packet, ETX)
 
-	for i := range withChecksum {
-		fmt.Print(string(withChecksum[i]))
-	}
-
 	return packet
 }
 
@@ -92,4 +96,17 @@ func checksum(b []byte) []byte {
 
 	return []byte(checksm)
 
+}
+
+// 00/00037/N/60/A/AUTHENTICATION FAILURE  /
+func parseSessionResp(r string) error {
+	//basically just look for a ACK or NEGATIVE_RESULT
+	split := strings.Split(r, "/")
+
+	if split[2] == "N" {
+		err := AuthError{}
+		return err
+	}
+
+	return nil
 }
